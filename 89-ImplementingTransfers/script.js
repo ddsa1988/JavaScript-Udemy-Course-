@@ -42,9 +42,12 @@ const containerApp = document.querySelector(".app");
 const containerMovements = document.querySelector(".movements");
 
 const btnLogin = document.querySelector(".login__btn");
+const btnTransfer = document.querySelector(".form__btn--transfer");
 
 const inputLoginUserName = document.querySelector(".login__input--user");
 const inputLoginPin = document.querySelector(".login__input--pin");
+const inputTransferTo = document.querySelector(".form__input--to");
+const inputTransferAmount = document.querySelector(".form__input--amount");
 
 // Functions
 function displayMovements(movements, sort = false) {
@@ -102,6 +105,17 @@ function createUsernames(accs) {
 
 createUsernames(accounts);
 
+function updateUI(acc) {
+    //Display movements
+    displayMovements(acc.movements);
+
+    //Display balance
+    calcDisplayBalance(acc);
+
+    //Display summary
+    calcDisplaySummary(acc);
+}
+
 // Event handlers
 let currentAccount;
 
@@ -126,13 +140,31 @@ btnLogin.addEventListener("click", function (e) {
         inputLoginUserName.value = inputLoginPin.value = "";
         inputLoginPin.blur();
 
-        //Display movements
-        displayMovements(currentAccount.movements);
+        //Update page interface
+        updateUI(currentAccount);
+    }
+});
 
-        //Display balance
-        calcDisplayBalance(currentAccount);
+btnTransfer.addEventListener("click", function (e) {
+    e.preventDefault();
+    const amount = Number(inputTransferAmount.value);
+    const receiverAcc = accounts.find(
+        (acc) => acc.username === inputTransferTo.value
+    );
 
-        //Display summary
-        calcDisplaySummary(currentAccount);
+    inputTransferAmount.value = inputTransferTo.value = "";
+
+    if (
+        amount > 0 &&
+        receiverAcc &&
+        currentAccount.balance >= amount &&
+        receiverAcc.username !== currentAccount.username
+    ) {
+        //Doing the transfer
+        currentAccount.movements.push(-amount);
+        receiverAcc.movements.push(amount);
+
+        //Update page interface
+        updateUI(currentAccount);
     }
 });
