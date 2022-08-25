@@ -59,7 +59,7 @@ const inputClosePin = document.querySelector(".form__input--pin");
 function displayMovements(movements, sort = false) {
     containerMovements.innerHTML = "";
 
-    const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+    const movs = sort ? movements.slice().sort((a, b) => a - b) : movements; //Creates a copy of the array using slice
 
     movs.forEach(function (value, i) {
         const type = value > 0 ? "deposit" : "withdrawal";
@@ -188,6 +188,13 @@ btnLoan.addEventListener("click", function (e) {
         updateUI(currentAccount);
     }
     inputLoanAmount.value = "";
+});
+
+let sorted = false;
+btnSort.addEventListener("click", function (e) {
+    e.preventDefault();
+    displayMovements(currentAccount.movements, !sorted);
+    sorted = !sorted;
 });
 
 btnClose.addEventListener("click", function (e) {
