@@ -65,27 +65,67 @@ const dogs = [
     },
 ];
 
-function dogRecommendedFood(dogsArray) {
-    dogsArray.forEach((obj) => {
-        obj.recommendedFood = Number((obj?.weight ** 0.75 * 28).toFixed(2));
-    });
-}
-
-function dogEatingStatus(dogsArray, owner) {
-    dogsArray.forEach((obj) => {
-        if (obj.owners?.includes(owner)) {
-            console.log(
-                obj?.curFood < obj?.recommendedFood
-                    ? "The dog is eating too little!"
-                    : "The dog is eating too much!"
-            );
-        }
-    });
-}
-
-// 1
-dogRecommendedFood(dogs);
+//1
+dogs.forEach(
+    (obj) =>
+        (obj.recommendedFood = Number((obj?.weight ** 0.75 * 28).toFixed(2)))
+);
 console.log(dogs);
+console.log();
 
-// 2
-dogEatingStatus(dogs, "Sarah");
+//2
+const dogSarah = dogs.find((obj) => obj.owners.includes("Sarah"));
+console.log(
+    `Sarah's dogs is eating too ${
+        dogSarah.curFood > dogSarah.recommendedFood ? "much." : "little."
+    }`
+);
+console.log();
+
+//3
+const ownersEatTooMuch = dogs
+    .filter((obj) => obj.curFood > obj.recommendedFood)
+    .flatMap((obj) => obj.owners);
+console.log(ownersEatTooMuch);
+console.log();
+
+const ownersEatTooLittle = dogs
+    .filter((obj) => obj.curFood < obj.recommendedFood)
+    .flatMap((obj) => obj.owners);
+console.log(ownersEatTooLittle);
+console.log();
+
+//4
+console.log(`${ownersEatTooMuch.join(" and ")}'s dogs eat too much.`);
+console.log(`${ownersEatTooLittle.join(" and ")}'s dogs eat too litle.`);
+console.log();
+
+//5
+console.log(dogs.some((obj) => obj.curFood === obj.recommendedFood));
+console.log();
+
+//6
+console.log(
+    dogs.some(
+        (obj) =>
+            obj.curFood > obj.recommendedFood * 0.9 &&
+            obj.curFood < obj.recommendedFood * 1.1
+    )
+);
+console.log();
+
+//7
+console.log(
+    dogs.filter(
+        (obj) =>
+            obj.curFood > obj.recommendedFood * 0.9 &&
+            obj.curFood < obj.recommendedFood * 1.1
+    )
+);
+console.log();
+
+//8
+const dogsCopy = dogs
+    .slice()
+    .sort((a, b) => a.recommendedFood - b.recommendedFood);
+console.log(dogsCopy);
