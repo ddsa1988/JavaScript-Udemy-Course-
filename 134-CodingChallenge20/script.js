@@ -48,7 +48,7 @@ class Car {
     }
 
     setSpeedUs(speed) {
-        this.speed = speed * 1.6 >= 0 && speed * 1.6 <= 300 ? speed : 0;
+        this.speed = speed * 1.6 >= 0 && speed * 1.6 <= 300 ? speed * 1.6 : 0;
     }
 
     getSpeedUs() {
